@@ -1,0 +1,56 @@
+<template>
+  <div class="seck">
+    <!-- 面包屑 -->
+    <el-bread></el-bread>
+    <!-- 添加按钮 -->
+    <el-button type="primary" plain size="small" @click="add">添加</el-button>
+    <!-- 列表渲染 -->
+    <v-table @edit="edit"></v-table>
+    <!-- 弹框 -->
+    <v-add ref="selectOne" @cancel="cancel" :addInfo="addInfo"></v-add>
+  </div>
+</template>
+
+<script>
+import vTable from "./list";
+import vAdd from "./addinfo";
+export default {
+  data() {
+    return {
+      addInfo: {
+        isShow: false, //弹框打开关闭
+        isAdd: true, //添加还是编辑
+      },
+    };
+  },
+  components: {
+    vTable,
+    vAdd,
+  },
+  methods: {
+    //点击添加打开弹框
+    add() {
+      this.addInfo.isShow = true;
+      //点击添加的时候，告诉弹框你是添加
+      this.addInfo.isAdd = true;
+    },
+    //子组件触发的父组件修改弹框状态
+    cancel() {
+      this.addInfo.isShow = false;
+    },
+    //子组件触发父组件联动编辑
+    edit(e) {
+      this.addInfo.isShow = true;
+      this.addInfo.isAdd = false;
+      // console.log(this.$refs,"1111111");
+      this.$refs.selectOne.lookOne(e);
+    },
+  },
+};
+</script>
+
+<style lang="stylus" scoped>
+.el-button
+  margin-bottom 20px
+  display block
+</style>
